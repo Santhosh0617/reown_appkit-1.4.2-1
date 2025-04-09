@@ -84,12 +84,9 @@ class _AppKitModalMainWalletsPageState
       body: ExplorerServiceItemsListener(
         builder: (context, initialised, items, _) {
           if (!initialised) {
-            return ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: maxHeight),
-              child: const WalletsList(
-                isLoading: true,
-                itemList: [],
-              ),
+            return const WalletsList(
+              isLoading: true,
+              itemList: [],
             );
           }
           final emailEnabled = _magicService.isEmailEnabled.value;
@@ -138,7 +135,7 @@ class _AppKitModalMainWalletsPageState
                       child: Column(
                         children: [
                           SocialLoginButtonsView(),
-                          _LoginDivider(),
+                          // _LoginDivider(),
                         ],
                       ),
                     ),
