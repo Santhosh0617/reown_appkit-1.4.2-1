@@ -84,9 +84,12 @@ class _AppKitModalMainWalletsPageState
       body: ExplorerServiceItemsListener(
         builder: (context, initialised, items, _) {
           if (!initialised) {
-            return const WalletsList(
-              isLoading: true,
-              itemList: [],
+            return ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: maxHeight),
+              child: const WalletsList(
+                isLoading: true,
+                itemList: [],
+              ),
             );
           }
           final emailEnabled = _magicService.isEmailEnabled.value;
@@ -115,93 +118,91 @@ class _AppKitModalMainWalletsPageState
           } else {
             maxHeight += 30.0;
           }
+          maxHeight -= 30.0;
           final itemsToShow = items.getRange(0, itemsCount);
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              WalletsList(
-                onTapWallet: (data) {
-                  service.selectWallet(data);
-                  widgetStack.instance.push(const ConnectWalletPage());
-                },
-                firstItem: Column(
-                  children: [
-                    EmailLoginInputField(),
-                    Visibility(
-                      visible: emailEnabled || socialEnabled,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4.0,
-                        ),
-                        child: Column(
-                          children: [
-                            SocialLoginButtonsView(),
-                            // _LoginDivider(),
-                          ],
-                        ),
+          return ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: maxHeight),
+            child: WalletsList(
+              onTapWallet: (data) {
+                service.selectWallet(data);
+                widgetStack.instance.push(const ConnectWalletPage());
+              },
+              firstItem: Column(
+                children: [
+                  EmailLoginInputField(),
+                  Visibility(
+                    visible: emailEnabled || socialEnabled,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0,
+                      ),
+                      child: Column(
+                        children: [
+                          SocialLoginButtonsView(),
+                          // _LoginDivider(),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-                itemList: itemsToShow.toList(),
-                bottomItems: [
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  //   child: (!modalInstance.featuresConfig.showMainWallets &&
-                  //           (emailEnabled || socials.isNotEmpty))
-                  //       ? AllWalletsItem(
-                  //           title: 'Continue with a wallet',
-                  //           titleAlign: TextAlign.center,
-                  //           leading: RoundedIcon(
-                  //             padding: 10.0,
-                  //             assetPath:
-                  //                 'lib/modal/assets/icons/regular/wallet.svg',
-                  //             assetColor: themeColors.foreground100,
-                  //             circleColor: Colors.transparent,
-                  //             borderColor: Colors.transparent,
-                  //           ),
-                  //           onTap: () {
-                  //             widgetStack.instance.push(
-                  //               const ReownAppKitModalAllWalletsPage(),
-                  //               event: ClickAllWalletsEvent(),
-                  //             );
-                  //           },
-                  //         )
-                  //       : AllWalletsItem(
-                  //           trailing: (items.length <= kShortWalletListCount)
-                  //               ? null
-                  //               : ValueListenableBuilder<int>(
-                  //                   valueListenable:
-                  //                       _explorerService.totalListings,
-                  //                   builder: (context, value, _) {
-                  //                     return WalletItemChip(
-                  //                       value: value.lazyCount,
-                  //                     );
-                  //                   },
-                  //                 ),
-                  //           onTap: () {
-                  //             if (items.length <= kShortWalletListCount) {
-                  //               widgetStack.instance.push(
-                  //                 const ReownAppKitModalQRCodePage(),
-                  //                 event: SelectWalletEvent(
-                  //                   name: 'WalletConnect',
-                  //                   explorerId: '',
-                  //                   platform: AnalyticsPlatform.qrcode,
-                  //                 ),
-                  //               );
-                  //             } else {
-                  //               widgetStack.instance.push(
-                  //                 const ReownAppKitModalAllWalletsPage(),
-                  //                 event: ClickAllWalletsEvent(),
-                  //               );
-                  //             }
-                  //           },
-                  //         ),
-                  // ),
+                  ),
                 ],
               ),
-            ],
+              itemList: itemsToShow.toList(),
+              bottomItems: [
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                //   child: (!modalInstance.featuresConfig.showMainWallets &&
+                //           (emailEnabled || socials.isNotEmpty))
+                //       ? AllWalletsItem(
+                //           title: 'Continue with a wallet',
+                //           titleAlign: TextAlign.center,
+                //           leading: RoundedIcon(
+                //             padding: 10.0,
+                //             assetPath:
+                //                 'lib/modal/assets/icons/regular/wallet.svg',
+                //             assetColor: themeColors.foreground100,
+                //             circleColor: Colors.transparent,
+                //             borderColor: Colors.transparent,
+                //           ),
+                //           onTap: () {
+                //             widgetStack.instance.push(
+                //               const ReownAppKitModalAllWalletsPage(),
+                //               event: ClickAllWalletsEvent(),
+                //             );
+                //           },
+                //         )
+                //       : AllWalletsItem(
+                //           trailing: (items.length <= kShortWalletListCount)
+                //               ? null
+                //               : ValueListenableBuilder<int>(
+                //                   valueListenable:
+                //                       _explorerService.totalListings,
+                //                   builder: (context, value, _) {
+                //                     return WalletItemChip(
+                //                       value: value.lazyCount,
+                //                     );
+                //                   },
+                //                 ),
+                //           onTap: () {
+                //             if (items.length <= kShortWalletListCount) {
+                //               widgetStack.instance.push(
+                //                 const ReownAppKitModalQRCodePage(),
+                //                 event: SelectWalletEvent(
+                //                   name: 'WalletConnect',
+                //                   explorerId: '',
+                //                   platform: AnalyticsPlatform.qrcode,
+                //                 ),
+                //               );
+                //             } else {
+                //               widgetStack.instance.push(
+                //                 const ReownAppKitModalAllWalletsPage(),
+                //                 event: ClickAllWalletsEvent(),
+                //               );
+                //             }
+                //           },
+                //         ),
+                // ),
+              ],
+            ),
           );
         },
       ),
@@ -209,35 +210,35 @@ class _AppKitModalMainWalletsPageState
   }
 }
 
-// class _LoginDivider extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     final themeColors = ReownAppKitModalTheme.colorsOf(context);
-//     final themeData = ReownAppKitModalTheme.getDataOf(context);
-//     return Row(
-//       children: [
-//         Expanded(
-//           child: Divider(color: themeColors.grayGlass005, height: 0.0),
-//         ),
-//         Padding(
-//           padding: const EdgeInsets.only(
-//             left: kPadding12,
-//             right: kPadding12,
-//           ),
-//           child: Text(
-//             'Or',
-//             style: themeData.textStyles.small400.copyWith(
-//               color: themeColors.foreground200,
-//             ),
-//           ),
-//         ),
-//         Expanded(
-//           child: Divider(color: themeColors.grayGlass005, height: 0.0),
-//         ),
-//       ],
-//     );
-//   }
-// }
+class _LoginDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final themeColors = ReownAppKitModalTheme.colorsOf(context);
+    final themeData = ReownAppKitModalTheme.getDataOf(context);
+    return Row(
+      children: [
+        Expanded(
+          child: Divider(color: themeColors.grayGlass005, height: 0.0),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: kPadding12,
+            right: kPadding12,
+          ),
+          child: Text(
+            'Or',
+            style: themeData.textStyles.small400.copyWith(
+              color: themeColors.foreground200,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Divider(color: themeColors.grayGlass005, height: 0.0),
+        ),
+      ],
+    );
+  }
+}
 
 extension on int {
   String get lazyCount {
