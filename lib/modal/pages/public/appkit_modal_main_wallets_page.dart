@@ -118,7 +118,7 @@ class _AppKitModalMainWalletsPageState
           } else {
             maxHeight += 30.0;
           }
-          maxHeight -= 30.0;
+          maxHeight -= 60.0;
           final itemsToShow = items.getRange(0, itemsCount);
           return ConstrainedBox(
             constraints: BoxConstraints(maxHeight: maxHeight),
