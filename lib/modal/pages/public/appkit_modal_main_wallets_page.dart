@@ -63,7 +63,7 @@ class _AppKitModalMainWalletsPageState
     final service = ModalProvider.of(context).instance;
     final isPortrait = ResponsiveData.isPortrait(context);
     double maxHeight = isPortrait
-        ? (kListItemHeight * 6)
+        ? (kListItemHeight * 5)
         : ResponsiveData.maxHeightOf(context);
 
     final isSignIn = _magicService.isEmailEnabled.value ||
@@ -118,7 +118,7 @@ class _AppKitModalMainWalletsPageState
           } else {
             maxHeight += 30.0;
           }
-          maxHeight -= 60.0;
+          maxHeight -= 30.0;
           final itemsToShow = items.getRange(0, itemsCount);
           return ConstrainedBox(
             constraints: BoxConstraints(maxHeight: maxHeight),
